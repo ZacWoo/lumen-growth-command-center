@@ -483,6 +483,23 @@ def _source_badges():
         <div>{chips}</div></div>"""), unsafe_allow_html=True)
 
 
+def _maker_card():
+    st.markdown(H(
+        f"""<div style="background:rgba(255,255,255,.04);
+        border:1px solid rgba(255,255,255,.10);border-radius:10px;
+        padding:.7rem .8rem;margin:.1rem 0 .2rem">
+        <div style="color:#E6ECF6;font-weight:700;font-size:.82rem">Built by Zac W</div>
+        <div style="color:#8FA2C0;font-size:.7rem;margin:.12rem 0 .45rem">
+        Data Science &amp; Growth Analytics</div>
+        <div style="font-size:.75rem;font-weight:600">
+        <a href="https://www.linkedin.com/in/zacwoo/" target="_blank"
+          style="color:#9B95FF;text-decoration:none">LinkedIn</a>
+        <span style="color:#5C6B86;margin:0 .25rem">·</span>
+        <a href="mailto:wzl775@gmail.com"
+          style="color:#9B95FF;text-decoration:none">Email</a>
+        </div></div>"""), unsafe_allow_html=True)
+
+
 def _coalesce(selected, options):
     return list(options) if not selected else selected
 
@@ -529,7 +546,9 @@ def render_sidebar(c, o, a, f, active=""):
             disc = st.radio("Discount", ["All", "Discounted", "Full price"],
                             horizontal=True, key="flt_disc")
 
-        st.markdown("<div style='height:.4rem'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:.55rem'></div>", unsafe_allow_html=True)
+        _maker_card()
+        st.markdown("<div style='height:.55rem'></div>", unsafe_allow_html=True)
         _source_badges()
         st.markdown(
             "<div style='color:#5C6B86;font-size:.68rem;margin-top:.6rem'>"
@@ -619,7 +638,9 @@ def status_pill(text, tone="warn", inline=True):
 
 def insight_kpi(label, value, delta=None, delta_good=True, insight="",
                 pill=None, pill_tone="neutral"):
-    """Premium insight KPI card (returns HTML; render inside a column)."""
+    """Premium insight KPI card with FIXED vertical slots so every card in a row
+    aligns badge → label → value → delta → insight and shares one height — even
+    when some cards have a pill/delta and others don't."""
     trend = ""
     if delta is not None:
         col = GOOD if delta_good else BAD
@@ -627,18 +648,18 @@ def insight_kpi(label, value, delta=None, delta_good=True, insight="",
         trend = (f'<span style="color:{col};font-weight:700;font-size:.8rem">'
                  f'{arrow} {abs(delta):.1f}% <span style="color:{MUTE};'
                  f'font-weight:500">MoM</span></span>')
-    pill_html = (f'<div style="margin-bottom:.55rem">'
-                 f'{status_pill(pill, pill_tone)}</div>') if pill else ""
+    badge = status_pill(pill, pill_tone) if pill else ""
     return H(f"""<div class="pcard" style="background:{CARD};border:1px solid {LINE};
-    border-radius:14px;padding:1.05rem 1.15rem;height:100%;
-    box-shadow:0 4px 14px rgba(10,37,64,.05)">
-    {pill_html}
-    <div style="font-size:.76rem;color:{SUBTLE};font-weight:600;
-      text-transform:uppercase;letter-spacing:.05em">{label}</div>
+    border-radius:14px;padding:1.1rem 1.15rem 1.15rem;height:100%;display:flex;
+    flex-direction:column;box-shadow:0 4px 14px rgba(10,37,64,.05)">
+    <div style="height:22px;display:flex;align-items:center;margin-bottom:.55rem">{badge}</div>
+    <div style="font-size:.74rem;color:{SUBTLE};font-weight:700;
+      text-transform:uppercase;letter-spacing:.06em">{label}</div>
     <div style="font-size:1.62rem;font-weight:800;color:{INK};
-      margin:.18rem 0 .1rem;letter-spacing:-.01em">{value}</div>
-    <div style="margin-bottom:.35rem">{trend}</div>
-    <div style="color:{SUBTLE};font-size:.8rem;line-height:1.35">{insight}</div>
+      margin:.16rem 0 .1rem;letter-spacing:-.01em">{value}</div>
+    <div style="height:18px;margin-bottom:.5rem">{trend}</div>
+    <div style="color:{SUBTLE};font-size:.8rem;line-height:1.35;
+      min-height:2.3em">{insight}</div>
     </div>""")
 
 
