@@ -1,0 +1,6 @@
+streamlit>=1.40
+pandas>=2.0
+numpy>=1.26
+plotly>=5.20
+# dev-only: required to regenerate the synthetic CSVs via generate_data.py
+# faker>=24.0
