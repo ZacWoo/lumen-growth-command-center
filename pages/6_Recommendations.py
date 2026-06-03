@@ -23,11 +23,12 @@ page_title("What should we do next?",
 # --- action backlog --------------------------------------------------------
 section("Action backlog", "Ranked by priority and expected impact.")
 moves = recommended_moves(c, o, a)
-cols = st.columns(2)
-for i, mv in enumerate(moves):
-    with cols[i % 2]:
-        st.markdown(action_card(**mv), unsafe_allow_html=True)
-        st.markdown("<div style='height:.7rem'></div>", unsafe_allow_html=True)
+# render in row-pairs so each row's two cards share one (equal) height
+for i in range(0, len(moves), 2):
+    row = st.columns(2)
+    for j, mv in enumerate(moves[i:i + 2]):
+        row[j].markdown(action_card(**mv), unsafe_allow_html=True)
+    st.markdown("<div style='height:.7rem'></div>", unsafe_allow_html=True)
 
 # --- weekly founder memo ---------------------------------------------------
 section("Weekly Founder Memo",

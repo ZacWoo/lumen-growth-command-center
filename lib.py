@@ -432,6 +432,13 @@ def inject_theme():
     .stPlotlyChart {{ border-radius:14px; }}
     hr {{ border-color:{LINE}; }}
     h1,h2,h3,h4,h5 {{ color:{INK}; letter-spacing:-.01em; }}
+    /* equal-height cards: stretch every column in a row that holds a premium
+       card so cards share one height regardless of text length */
+    [data-testid="stHorizontalBlock"]:has(.pcard) {{ align-items:stretch; }}
+    [data-testid="stHorizontalBlock"]:has(.pcard) [data-testid="stColumn"] {{
+        display:flex; flex-direction:column; }}
+    [data-testid="stColumn"] .stMarkdown:has(.pcard),
+    [data-testid="stColumn"] .stMarkdown:has(.pcard) > div {{ height:100%; }}
     </style>""", unsafe_allow_html=True)
 
 
